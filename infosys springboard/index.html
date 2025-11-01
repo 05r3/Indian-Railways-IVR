@@ -1,0 +1,102 @@
+##frontend
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indian Railways IVR - Real Call Console</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f5f7fa;
+    }
+    h2 {
+      color: #0d47a1;
+    }
+    label {
+      font-weight: bold;
+      color: #333;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+    input {
+      border: 1px solid #ccc;
+      width: 250px;
+    }
+    button {
+      background: #0d47a1;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1565c0;
+    }
+    #log {
+      margin-top: 20px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 6px;
+      font-family: monospace;
+      border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+  <h2>🚉 Indian Railways IVR - Real Call Launcher</h2>
+  <p>
+    Enter a passenger phone number to start a <strong>real IVR call</strong> via Twilio.<br />
+    The call will connect the user to the Indian Railways voice menu.
+  </p>
+
+  <label>Passenger Phone Number:</label><br>
+  <input id="phone" type="tel" placeholder="+91XXXXXXXXXX" /><br>
+
+  <button id="call-btn">Start IVR Call</button>
+
+  <div id="log">Waiting for input...</div>
+
+  <script>
+    // Replace this with your backend domain or local URL
+    const API_BASE_URL = ""
+    document.getElementById("call-btn").onclick = async () => {
+      const to = document.getElementById("phone").value.trim();
+      if (!to) return alert("Please enter a valid phone number in +91XXXXXXXXXX format.");
+
+      document.getElementById("log").innerText = "📡 Initiating call...";
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/call/start`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ to })
+        });
+
+        const data = await res.json();
+        console.log(data);
+
+        if (data.status === "queued" || data.status === "in-progress") {
+          document.getElementById("log").innerText = 
+            ` Call initiated!\nFrom: ${data.from}\nTo: ${data.to}\nCall SID: ${data.sid}`;
+        } else {
+          document.getElementById("log").innerText =
+            "Failed to start call: " + JSON.stringify(data, null, 2);
+        }
+      } catch (err) {
+        console.error(err);
+        document.getElementById("log").innerText = " Error: " + err.message;
+      }
+    };
+  </script>
+</body>
+</html>
+
+
+
+<
