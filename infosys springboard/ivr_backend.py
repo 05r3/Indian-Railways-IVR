@@ -10,17 +10,27 @@ from fastapi.middleware.cors import CORSMiddleware
 from twilio.twiml.voice_response import VoiceResponse
 from twilio.rest import Client
 import os, re, logging
+from dotenv import load_dotenv
+
+
+#===========================================================
+# Load environment variables from .env
+load_dotenv() 
 
 # ============================================================
-# Configuration
+# Configuration (Load from ENV Variables)
+# ============================================================
 
+NGROK_URL = os.getenv("NGROK_URL")
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
 
-URL = ""
-TWILIO_ACCOUNT_SID = ""                      
-TWILIO_AUTH_TOKEN =   ""                        
-TWILIO_PHONE_NUMBER =  ""                       
+if not all([NGROK_URL, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER]):
+    raise Exception(" Missing one or more required environment variables.")
 
 client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+
 
 # ============================================================
 # Initialize FastAPI App
