@@ -43,7 +43,7 @@ Assess the architecture and limitations of existing **VXML-based IVR** systems a
 ###  Outcome
 Provides a  blueprint for connecting legacy IVRs to modern Conversational AI platforms with minimal rework.
 
- _Refer to:_ `Module1_Legacy_Analysis.docx`
+
 
 —
 
@@ -79,7 +79,7 @@ Build a **middleware/API layer** to connect legacy VXML systems with the Convers
 - Verified menu-to-AI transition flow
 - Ready for integration with ACS or BAP
 
- _Refer to:_ `indian_railways_ivr_backend.py`
+
 
 ---
 
@@ -100,7 +100,7 @@ Introduce **natural language conversation** into the IVR system through AI-power
 3. AI or rule-based logic generates natural responses  
 4. Twilio converts reply to voice output for caller  
 
-📄 _Refer to:_ `ivr_backend.py`
+
 
 ---
 
