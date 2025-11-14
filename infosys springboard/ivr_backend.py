@@ -15,7 +15,7 @@ import os, re, logging
 # Configuration
 
 
-NGROK_URL = ""
+URL = ""
 TWILIO_ACCOUNT_SID = ""                      
 TWILIO_AUTH_TOKEN =   ""                        
 TWILIO_PHONE_NUMBER =  ""                       
@@ -46,13 +46,13 @@ logger = logging.getLogger("ivr")
 # ============================================================
 def detect_intent_regex(text: str) -> str:
     text = text.lower()
-
-    if re.search(r"\b(book|reserve|ticket|reservation)\b", text):
+    
+    if re.search(r"\bcancel|refund\b", text):
+        return "cancel_ticket"
+    elif re.search(r"\b(book|reserve|ticket|reservation)\b", text):
         return "book_ticket"
     elif re.search(r"\bpnr|status\b", text):
         return "check_pnr"
-    elif re.search(r"\bcancel|refund\b", text):
-        return "cancel_ticket"
     elif re.search(r"\bfare|cost|price|how much\b", text):
         return "fare_enquiry"
     elif re.search(r"\btatkal\b", text):
