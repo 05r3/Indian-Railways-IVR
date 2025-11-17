@@ -151,32 +151,34 @@ Missing call parameters
 
 Load Testing (load_test.py)
 
-Simulates multiple users calling the IVR concurrently
-
-Uses Locust to stress test /voice and /conversation endpoints
+This testing performs concurrent IVR call simulation.
+It uses Python’s standard requests library and ThreadPoolExecutor to generate multiple fake IVR calls hitting the backend.
 
 Validation Results:
 All tests passed successfully, confirming backend correctness, session handling, and conversation logic.
-
-Reference Files:
-
-unit_test.py
-
-integration_test.py
-
-e2e_tests.py
-
-errorhandling_Test.py
-
-load_test.py
 
 ## How to Run Tests
 # Unit, Integration, E2E, Error Handling
 pytest tests/
 
-# Load Testing
-locust -f tests/load_test.py
+# Load
+Running the Load Test
 
+Simply execute:
+
+python load_test.py
+
+What You Get After Running
+
+A summary report printed in the console:
+
+Total simulated calls
+
+Count of successful and failed calls
+
+Time taken for the whole test
+
+Average time per call
 
 Note: Load testing requires the backend to be running at the specified URL.
 
