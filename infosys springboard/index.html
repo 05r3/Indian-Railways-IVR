@@ -1,5 +1,3 @@
-##FRONTEND
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,14 +43,26 @@
       border-radius: 6px;
       font-family: monospace;
       border: 1px solid #ddd;
+      white-space: pre-line;
+    }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 60px);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .keypad button {
+      font-size: 20px;
+      padding: 15px;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
-  <h2>🚉 Indian Railways IVR - Real Call Launcher</h2>
+  <h2> Indian Railways IVR - Real Call Launcher</h2>
   <p>
     Enter a passenger phone number to start a <strong>real IVR call</strong> via Twilio.<br />
-    The call will connect the user to the Indian Railways voice menu.
+    You can also press digits to simulate DTMF input.
   </p>
 
   <label>Passenger Phone Number:</label><br>
@@ -60,16 +70,34 @@
 
   <button id="call-btn">Start IVR Call</button>
 
+  <div class="keypad">
+    <button class="digit-btn">1</button>
+    <button class="digit-btn">2</button>
+    <button class="digit-btn">3</button>
+    <button class="digit-btn">4</button>
+    <button class="digit-btn">5</button>
+    <button class="digit-btn">6</button>
+    <button class="digit-btn">7</button>
+    <button class="digit-btn">8</button>
+    <button class="digit-btn">9</button>
+    <button class="digit-btn">*</button>
+    <button class="digit-btn">0</button>
+    <button class="digit-btn">#</button>
+  </div>
+
   <div id="log">Waiting for input...</div>
 
   <script>
-    // Replace this with  backend domain or local URL
-    const API_BASE_URL = ""
+    const API_BASE_URL = ""; // Replace with your backend URL
+
+    const log = document.getElementById("log");
+
+    // Start the call
     document.getElementById("call-btn").onclick = async () => {
       const to = document.getElementById("phone").value.trim();
       if (!to) return alert("Please enter a valid phone number in +91XXXXXXXXXX format.");
 
-      document.getElementById("log").innerText = "📡 Initiating call...";
+      log.innerText = "📡 Initiating call...";
 
       try {
         const res = await fetch(`${API_BASE_URL}/call/start`, {
@@ -82,20 +110,40 @@
         console.log(data);
 
         if (data.status === "queued" || data.status === "in-progress") {
-          document.getElementById("log").innerText = 
+          log.innerText = 
             ` Call initiated!\nFrom: ${data.from}\nTo: ${data.to}\nCall SID: ${data.sid}`;
         } else {
-          document.getElementById("log").innerText =
-            "Failed to start call: " + JSON.stringify(data, null, 2);
+          log.innerText = " Failed to start call: " + JSON.stringify(data, null, 2);
         }
       } catch (err) {
         console.error(err);
-        document.getElementById("log").innerText = " Error: " + err.message;
+        log.innerText = " Error: " + err.message;
       }
     };
+
+    // Handle keypad clicks
+    const digitButtons = document.querySelectorAll(".digit-btn");
+    digitButtons.forEach(btn => {
+      btn.onclick = async () => {
+        const digit = btn.innerText;
+        log.innerText += `\nPressed: ${digit}`;
+
+        // Optionally send to backend via a POST request
+        try {
+          await fetch(`${API_BASE_URL}/conversation`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ Digits: digit, CallSid: "SIMULATED_CALL_ID" })
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      };
+    });
   </script>
 </body>
 </html>
+
 
 
 
