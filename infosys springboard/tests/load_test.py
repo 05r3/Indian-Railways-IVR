@@ -5,7 +5,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # CONFIGURATION
 
-BASE_URL = "https://server-url"  
+BASE_URL = "https://indian-railways-ivr1.onrender.com"  
 VOICE_URL = f"{BASE_URL}/voice"
 CONVERSATION_URL = f"{BASE_URL}/conversation"
 
