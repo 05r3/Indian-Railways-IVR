@@ -58,7 +58,7 @@ logger = logging.getLogger("ivr")
 session_context = {}
 
 # ===========================
-# Intent detection (single unified function)
+# Intent detection 
 # Handles both DTMF digits and free-form speech.
 # ===========================
 def map_digits_to_intent(digits: str) -> str:
@@ -111,7 +111,6 @@ def detect_intent(text: str) -> str:
     return "unknown"
 
 # ===========================
-# Helper: build webhook target for Twilio actions
 # If BASE_WEBHOOK_URL is missing, action will be blank (Twilio expects a full URL in production).
 # ===========================
 def webhook(path: str) -> str:
@@ -324,7 +323,7 @@ def start_real_call(payload: dict = Body(...)):
         return {"error": str(e)}
 
 # ===========================
-# /call/end — cleanup after call ends (Twilio will POST here)
+# /call/end — cleanup after call ends 
 # ===========================
 @app.post("/call/end")
 async def call_end(request: Request):
