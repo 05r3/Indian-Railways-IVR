@@ -1,6 +1,6 @@
 import pytest
 from fastapi import Response
-from main import detect_intent, next_step, session_context
+from ivr_backend import detect_intent, next_step, session_context
 
 
 # =========================================================
