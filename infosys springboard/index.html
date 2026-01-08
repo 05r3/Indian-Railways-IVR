@@ -1,93 +1,43 @@
-# FRONTEND IVR
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Indian Railways IVR - Real Call Console</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 30px;
-      background: #f5f7fa;
-    }
-    h2 {
-      color: #0d47a1;
-    }
-    label {
-      font-weight: bold;
-      color: #333;
-    }
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      margin: 10px 0;
-      border-radius: 4px;
-    }
-    input {
-      border: 1px solid #ccc;
-      width: 250px;
-    }
-    button {
-      background: #0d47a1;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #1565c0;
-    }
-    #log {
-      margin-top: 20px;
-      background: #fff;
-      padding: 15px;
-      border-radius: 6px;
-      font-family: monospace;
-      border: 1px solid #ddd;
-      white-space: pre-line;
-    }
-    .keypad {
-      display: grid;
-      grid-template-columns: repeat(3, 60px);
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .keypad button {
-      font-size: 20px;
-      padding: 15px;
-      border-radius: 6px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h2> Indian Railways IVR - Real Call Launcher</h2>
-  <p>
-    Enter a passenger phone number to start a <strong>real IVR call</strong> via Twilio.<br />
-    You can also press digits to simulate DTMF input.
-  </p>
+  <div class="container">
+    <div class="header">
+      <h2>Indian Railways IVR</h2>
+      <p>Real Call Launcher</p>
+    </div>
 
-  <label>Passenger Phone Number:</label><br>
-  <input id="phone" type="tel" placeholder="+91XXXXXXXXXX" /><br>
+    <div class="input-group">
+      <label for="phone">Passenger Phone Number:</label>
+      <input id="phone" type="tel" placeholder="+91XXXXXXXXXX" />
+    </div>
 
-  <button id="call-btn">Start IVR Call</button>
+    <button id="call-btn">Start IVR Call</button>
 
-  <div class="keypad">
-    <button class="digit-btn">1</button>
-    <button class="digit-btn">2</button>
-    <button class="digit-btn">3</button>
-    <button class="digit-btn">4</button>
-    <button class="digit-btn">5</button>
-    <button class="digit-btn">6</button>
-    <button class="digit-btn">7</button>
-    <button class="digit-btn">8</button>
-    <button class="digit-btn">9</button>
-    <button class="digit-btn">*</button>
-    <button class="digit-btn">0</button>
-    <button class="digit-btn">#</button>
+    <div class="keypad">
+      <button class="digit-btn">1</button>
+      <button class="digit-btn">2</button>
+      <button class="digit-btn">3</button>
+      <button class="digit-btn">4</button>
+      <button class="digit-btn">5</button>
+      <button class="digit-btn">6</button>
+      <button class="digit-btn">7</button>
+      <button class="digit-btn">8</button>
+      <button class="digit-btn">9</button>
+      <button class="digit-btn">*</button>
+      <button class="digit-btn">0</button>
+      <button class="digit-btn">#</button>
+    </div>
+
+    <div id="log">Waiting for input...</div>
   </div>
-
-  <div id="log">Waiting for input...</div>
 
   <script>
     const API_BASE_URL = "https://indian-railways-ivr1.onrender.com"; // update it neccesary
