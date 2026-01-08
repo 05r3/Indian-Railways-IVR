@@ -11,6 +11,7 @@ import re
 import logging
 from dotenv import load_dotenv
 from typing import Optional
+import google.generativeai as genai
 
 # Load environment variables from .env (local dev). On Render, set env vars in dashboard.
 load_dotenv()
@@ -18,6 +19,7 @@ load_dotenv()
 # ===========================
 # Configuration (ENV)
 # ===========================
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 BASE_WEBHOOK_URL = os.getenv("BASE_WEBHOOK_URL", "").rstrip("/")  # ⚠️ Set this to your Render URL (no trailing slash)
 TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
@@ -31,6 +33,59 @@ if TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN:
         client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
     except Exception as e:
         client = None
+
+# ===========================
+# Gemini API Configuration
+# ===========================
+if GEMINI_API_KEY:
+    try:
+        genai.configure(api_key=GEMINI_API_KEY)
+    except Exception as e:
+        logger.error(f"Failed to configure Gemini API: {e}")
+
+def detect_intent_gemini(text: str) -> str:
+    """
+    Detects intent using Gemini API.
+    """
+    if not GEMINI_API_KEY:
+        return "unknown"
+    try:
+        model = genai.GenerativeModel('gemini-pro')
+        prompt = f"""
+        You are an intent detection system for an Indian Railways IVR.
+        Your task is to identify the user's intent from their speech.
+        The user said: "{text}"
+
+        Return one of the following intents:
+        - book_ticket
+        - check_pnr
+        - cancel_ticket
+        - fare_enquiry
+        - tatkal_info
+        - talk_agent
+        - special_assistance
+        - train_live_status
+        - platform_locator
+        - unknown
+
+        Return only the intent name.
+        """
+        response = model.generate_content(prompt)
+        intent = response.text.strip()
+        # Basic validation to ensure the model returns a valid intent
+        valid_intents = [
+            "book_ticket", "check_pnr", "cancel_ticket", "fare_enquiry",
+            "tatkal_info", "talk_agent", "special_assistance",
+            "train_live_status", "platform_locator", "unknown"
+        ]
+        if intent in valid_intents:
+            return intent
+        else:
+            logger.warning(f"Gemini returned an invalid intent: {intent}")
+            return "unknown"
+    except Exception as e:
+        logger.error(f"Error calling Gemini API: {e}")
+        return "unknown"
 
 # ===========================
 # FastAPI app + CORS
@@ -88,7 +143,12 @@ def detect_intent(text: str) -> str:
     if re.fullmatch(r"\d+", text):
         return map_digits_to_intent(text)
 
-    # Speech patterns (regex)
+    # Try Gemini API first
+    intent = detect_intent_gemini(text)
+    if intent != "unknown":
+        return intent
+
+    # Fallback to regex if Gemini fails or is not configured
     if re.search(r"\b(cancel|refund)\b", text):
         return "cancel_ticket"
     if re.search(r"\b(book|reserve|ticket|reservation)\b", text):
