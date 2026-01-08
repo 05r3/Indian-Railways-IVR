@@ -1,0 +1,104 @@
+body {
+  font-family: 'Google Sans', sans-serif;
+  background-color: #f5f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 400px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.header h2 {
+  font-size: 24px;
+  color: #1a73e8;
+  margin: 0;
+}
+
+.header p {
+  color: #5f6368;
+  font-size: 16px;
+}
+
+.input-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #3c4043;
+}
+
+#phone {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+#call-btn {
+  background-color: #1a73e8;
+  color: #ffffff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 20px;
+  transition: background-color 0.3s;
+}
+
+#call-btn:hover {
+  background-color: #1558b3;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.keypad .digit-btn {
+  background-color: #f1f3f4;
+  border: none;
+  border-radius: 8px;
+  padding: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.keypad .digit-btn:hover {
+  background-color: #e0e2e6;
+}
+
+#log {
+  background-color: #f8f9fa;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  padding: 15px;
+  font-family: 'Roboto Mono', monospace;
+  white-space: pre-wrap;
+  text-align: left;
+  min-height: 50px;
+  color: #3c4043;
+}
